@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 OLD_USER_ID=$(id -u nagios)
 OLD_GROUP_ID=$(id -g nagios)
 OLD_CMDGROUP_ID=$(id -g nagcmd)

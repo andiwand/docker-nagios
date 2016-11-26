@@ -7,7 +7,7 @@ ENV USER_ID="9002" \
 COPY "entrypoint.sh" "/usr/local/share/docker-nagios-apache/entrypoint.sh"
 COPY "apache.conf" "/usr/local/share/docker-nagios-apache/config/apache.conf"
 
-RUN groupadd -r nagcmd \
+RUN groupadd -r -g ${CMDGROUP_ID} nagcmd \
     && usermod -a -G nagcmd www-data \
     && a2enmod rewrite cgi \
     && htpasswd -b -c "/usr/local/share/docker-nagios-apache/config/htpasswd.user" nagiosadmin nagios \

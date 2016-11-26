@@ -39,9 +39,9 @@ RUN apt-get update \
         unzip                       \
         bc
 
-RUN useradd -r -d "${NAGIOS_HOME}" nagios \
-    && groupadd -r nagcmd \
-    && usermod -a -G nagcmd nagios
+RUN groupadd -r -g ${CMDGROUP_ID} nagcmd \
+    && groupadd -r -g ${GROUP_ID} nagios \
+    && useradd -r -u ${USER_ID} -g nagios -G nagcmd -d "${NAGIOS_HOME}" -s "/bin/false" nagios \
 
 RUN git clone "https://github.com/NagiosEnterprises/nagioscore.git" "/tmp/nagioscore" \
     && cd "/tmp/nagioscore" \

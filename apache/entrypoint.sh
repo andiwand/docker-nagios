@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 OLD_USER_ID=$(id -u www-data)
 OLD_GROUP_ID=$(id -g www-data)
 
