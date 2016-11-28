@@ -1,4 +1,4 @@
-FROM php:7-apache
+FROM php:7.0-apache
 
 ENV USER_ID="9002" \
     GROUP_ID="9002" \
