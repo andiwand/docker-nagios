@@ -103,4 +103,4 @@ ADD "entrypoint.sh" "/usr/local/share/docker-nagios-core/entrypoint.sh"
 
 VOLUME [ "${NAGIOS_CONFIG}", "/etc/ssmtp" ]
 
-ENTRYPOINT "/usr/local/share/docker-nagios-core/entrypoint.sh"
+ENTRYPOINT [ "/usr/local/share/docker-nagios-core/entrypoint.sh" ]
