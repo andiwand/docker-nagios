@@ -1,19 +1,18 @@
 version: '2'
 
 services:
-  nagios:
-    build: nagios
+  core:
+    build: core
     image: andiwand/nagios-core
     container_name: nagios-core
     restart: always
     volumes:
-      - core:/usr/local/nagios
+      - nagios-core-link:/usr/local/nagios
       - nagios-config:/usr/local/nagios/etc
       - mail-config:/etc/ssmtp
     environment:
-      - USER_ID=9000
-      - GROUP_ID=9000
-      - CMDGROUP_ID=9001
+      - NAGIOS_USER_ID=9001
+      - NAGCMD_GROUP_ID=9002
   apache:
     build: apache
     image: andiwand/nagios-apache
@@ -22,15 +21,13 @@ services:
     ports:
       - "80:80"
     volumes:
-      - core:/usr/local/nagios
-      - apache-config:/usr/local/share/docker-nagios-apache/config
+      - nagios-core-link:/usr/local/nagios
+      - apache-config:/usr/local/nagios/apache
     environment:
-      - USER_ID=9000
-      - GROUP_ID=9000
-      - CMDGROUP_ID=9001
+      - NAGCMD_GROUP_ID=9002
 
 volumes:
-  core:
+  nagios-core-link:
   nagios-config:
   apache-config:
   mail-config:

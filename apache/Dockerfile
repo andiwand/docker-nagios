@@ -1,18 +1,20 @@
 FROM php:7.0-apache
 
-ENV USER_ID="9002" \
-    GROUP_ID="9002" \
-    CMDGROUP_ID="9001"
+ARG NAGIOS_HOME
 
-COPY "entrypoint.sh" "/usr/local/share/docker-nagios-apache/entrypoint.sh"
-COPY "apache.conf" "/usr/local/share/docker-nagios-apache/config/apache.conf"
+ENV NAGIOS_HOME="${NAGIOS_HOME:-/usr/local/nagios}" \
+	APACHE_CONF="${NAGIOS_HOME}/apache"
 
-RUN groupadd -r -g ${CMDGROUP_ID} nagcmd \
-    && usermod -a -G nagcmd www-data \
+RUN set -x \
     && a2enmod rewrite cgi \
-    && htpasswd -b -c "/usr/local/share/docker-nagios-apache/config/htpasswd.user" nagiosadmin nagios \
-    && ln -s "/usr/local/share/docker-nagios-apache/config/apache.conf" "/etc/apache2/sites-enabled/000-nagios.conf"
+    && mkdir -p "${NAGIOS_HOME}" \
+    && mkdir -p "${APACHE_CONF}" \
+    && htpasswd -b -c "${APACHE_CONF}/htpasswd.user" nagiosadmin nagios \
+    && ln -s "${APACHE_CONF}/apache.conf" "/etc/apache2/sites-enabled/000-nagios.conf"
 
-VOLUME "/usr/local/share/docker-nagios-apache/config"
+ADD "entrypoint.sh" "/usr/local/bin/entrypoint.sh"
+ADD "apache.conf" "${APACHE_CONF}/apache.conf"
 
-ENTRYPOINT "/usr/local/share/docker-nagios-apache/entrypoint.sh"
+VOLUME [ "${APACHE_CONF}" ]
+
+ENTRYPOINT "/usr/local/bin/entrypoint.sh"
