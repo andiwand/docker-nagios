@@ -1,6 +1,4 @@
-#!/bin/bash
-
-set -xe
+#!/usr/bin/with-contenv bash
 
 NAGIOS_UID=${NAGIOS_USER_ID:-9001}
 NAGIOS_GID=${NAGIOS_GROUP_ID:-9001}
@@ -14,6 +12,4 @@ chown -R nagios:nagios "${NAGIOS_ETC}"
 chown -R nagios:nagios "${NAGIOS_VAR}"
 chown -R nagios:nagcmd "${NAGIOS_VAR}/rw"
 chmod g+s "${NAGIOS_VAR}/rw"
-
-nagios "$@"
 
