@@ -1,4 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-exec s6-setuidgid nagios "${NAGIOS_HOME}/bin/nagios" "${NAGIOS_HOME}/etc/nagios.cfg"
-
