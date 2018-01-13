@@ -47,8 +47,6 @@ RUN apt-get install -y \
 #RUN groupadd -r nagcmd \
 #    && useradd -r -G nagcmd -d "${NAGIOS_HOME}" -s "/bin/bash" nagios
 
-RUN CPU_CORES="$( grep -c processor /proc/cpuinfo )" || CPU_CORES="1"
-
 RUN git clone "${CORE_GIT}" "${CORE_SOURCE_PATH}"
 RUN cd "${CORE_SOURCE_PATH}" \
     && git fetch \
@@ -61,6 +59,7 @@ RUN cd "${CORE_SOURCE_PATH}" \
         --with-nagios-group=root \
         --with-nagios-command-user=root \
         --with-command-group=root \
+    && CPU_CORES="$( grep -c processor /proc/cpuinfo )" || CPU_CORES="1" \
     && make -j "${CPU_CORES}" all \
     && make install \
     && make install-config
@@ -72,6 +71,7 @@ RUN cd "${PLUGINS_SOURCE_PATH}" \
     && git checkout "${PLUGINS_TAG}" \
     && ./tools/setup \
     && ./configure --prefix="${NAGIOS_HOME}" --with-cgiurl="/nagios/cgi-bin" \
+    && CPU_CORES="$( grep -c processor /proc/cpuinfo )" || CPU_CORES="1" \
     && make -j "${CPU_CORES}" \
     && make install
 RUN rm -rf "${PLUGINS_SOURCE_PATH}"
